@@ -26,7 +26,7 @@ SECRET_KEY = '(2u%+k&i6g#y4paem)^yn4n=q47!n#t@fc+%mvomg=9%zq__1l'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+# TODO: Need to add pennapps-xx-..... host above
 
 # Application definition
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'chart',
 ]
 
 MIDDLEWARE = [
