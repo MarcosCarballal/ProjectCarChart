@@ -1,0 +1,6 @@
+
+# Environment
+pennappsenv/
+
+# Pycache
+*.pyc
