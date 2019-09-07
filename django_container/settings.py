@@ -25,7 +25,9 @@ SECRET_KEY = '(2u%+k&i6g#y4paem)^yn4n=q47!n#t@fc+%mvomg=9%zq__1l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'pennapps-xx-252216.appspot.com'
+]
 
 
 # Application definition
@@ -118,3 +120,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = './static/'
