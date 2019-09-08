@@ -9,44 +9,44 @@ DEFAULT_DB = 'cars'
 UNIX_SOCKET = '/cloudsql/pennapps-xx-252216:us-central1:pennapps-xx-instance'
 
     
-    def get_results_by_all_parameters(self,**kwargs,TODO:pass in pymysql):
-                bodyType = None;fuelType = None; minYear = None; maxYear = None; minPrice = None; maxPrice = None; minPrice = None; maxPrice = None; minSeats = None; maxSeats = None; minHorsePower = None; maxHorsePower = None; minEmissions = None; maxEmissions = None 
+def get_results_by_all_parameters(self,**kwargs):
+            bodyType = None;fuelType = None; minYear = None; maxYear = None; minPrice = None; maxPrice = None; minPrice = None; maxPrice = None; minSeats = None; maxSeats = None; minHorsePower = None; maxHorsePower = None; minEmissions = None; maxEmissions = None 
 
-		for key,value in kwargs.items():
-				if key == "bodyType": bodyType  = value 
-				if key == "fuelType": fuelType  = value 
-				if key == "minYear": minYear  = value 
-				if key == "maxYear": maxYear  = value 
-				if key == "minPrice": minPrice  = value 
-				if key == "maxPrice": maxPrice  = value 
-				if key == "minSeats": minSeats  = value 
-				if key == "maxSeats": maxSeats  = value 
-				if key == "minHorsePower": minHorsePower  = value 
-				if key == "maxHorsePower": maxHorsePower  = value 
-				if key == "minEmissions": minEmissions  = value 
-				if key == "maxEmissions": maxEmissions  = value 
+            for key,value in kwargs.items():
+                            if key == "bodyType": bodyType  = value 
+                            if key == "fuelType": fuelType  = value 
+                            if key == "minYear": minYear  = value 
+                            if key == "maxYear": maxYear  = value 
+                            if key == "minPrice": minPrice  = value 
+                            if key == "maxPrice": maxPrice  = value 
+                            if key == "minSeats": minSeats  = value 
+                            if key == "maxSeats": maxSeats  = value 
+                            if key == "minHorsePower": minHorsePower  = value 
+                            if key == "maxHorsePower": maxHorsePower  = value 
+                            if key == "minEmissions": minEmissions  = value 
+                            if key == "maxEmissions": maxEmissions  = value 
 
-		#Determine how many predicates there are to begin with. Keeps track of predicates not yet put into select string
-		predicate_count = 0
-		if bodyType is not None : predicate_count+=1
-		if fuelType is not None: predicate_count+=1
-		if name is not None: predicate_count+=1
-		if boot_mode is not None: predicate_count+=1
-		if build is not None: predicate_count+=1
-		if pon_mode is not None: predicate_count+=1
-		if device is not None: predicate_count+=1
-		if release is not None: predicate_count+=1
-		total_parameters = predicate_count
+            #Determine how many predicates there are to begin with. Keeps track of predicates not yet put into select string
+            predicate_count = 0
+            if bodyType is not None : predicate_count+=1
+            if fuelType is not None: predicate_count+=1
+            if name is not None: predicate_count+=1
+            if boot_mode is not None: predicate_count+=1
+            if build is not None: predicate_count+=1
+            if pon_mode is not None: predicate_count+=1
+            if device is not None: predicate_count+=1
+            if release is not None: predicate_count+=1
+            total_parameters = predicate_count
 
-		print("Predicate Count: " + str(predicate_count))
+            print("Predicate Count: " + str(predicate_count))
 
-		select = "SELECT * FROM " + self.test_results_table_name + " WHERE"
-		select += self.get_where_qualifier_by_all_parameters(total_parameters,status,requirement,name ,boot_mode , build ,pon_mode,device ,release)
-		if(total_parameters == 0):
-			select = select.split('WHERE')[0]
-		results = self._db_fetch_rows(select)
-	
-		return results
+            select = "SELECT * FROM " + self.test_results_table_name + " WHERE"
+            select += self.get_where_qualifier_by_all_parameters(total_parameters,status,requirement,name ,boot_mode , build ,pon_mode,device ,release)
+            if(total_parameters == 0):
+                    select = select.split('WHERE')[0]
+            results = self._db_fetch_rows(select)
+    
+            return results
 
 
 
