@@ -1,5 +1,6 @@
 import requests
 import json
+import re
 from ttictoc import TicToc
 from bs4 import BeautifulSoup
 
@@ -7,10 +8,10 @@ baseurl = 'https://www.cars-data.com/en/abarth-124-spider-1.4-multiair-16v-specs
 
 cars = []
 
-def parseAllCarInfo(carID):
+def parseIndividualCarInfo(carID):
     rawData = getRawResponse(carID)
     soup = getSoup(rawData)
-    jsonData = getJSONData(soup)
+    jsonData = getIndividualCarJSONData(soup)
     price = getPrice(soup)
     return jsonData, price
 
@@ -21,7 +22,7 @@ def getRawResponse(carID):
 def getSoup(rawResponse):
     return BeautifulSoup(rawResponse.text, "html.parser")
 
-def getJSONData(soup):
+def getIndividualCarJSONData(soup):
     result = soup.find("script", {"type": "application/ld+json"})
     data = result.contents[0]
     return json.loads(data.string)
@@ -31,7 +32,7 @@ def getPrice(soup):
     return result
 
 def getCarJSON(carID):
-        jsonData, price = parseAllCarInfo(carID)
+        jsonData, price = parseIndividualCarInfo(carID)
 
         engineInfo = jsonData['vehicleEngine'] if jsonData['vehicleEngine'] else None
         enginePower = None
@@ -72,5 +73,29 @@ def getCarJSON(carID):
 
         return car
 
-for i in range(1, 80000, 10000):
-    print(getCarJSON(i))
+def findAllBrands():
+    url = 'https://www.cars-data.com/en/car-brands-cars-logos.html'
+    rawResponse = requests.get(url)
+    soup = getSoup(rawResponse)
+    results = soup.findAll("option", {"value" : re.compile(r".+")})
+
+    baseurl = 'https://www.cars-data.com/en/'
+    for result in results[:5]:          #get rid of [:5] to check all
+        make = result.attrs['value']
+        url = "{}{}".format(baseurl, make)
+        findAllModels(url)
+
+def findAllModels(url):
+    rawResponse = requests.get(url)
+    soup = getSoup(rawResponse)
+    results = soup.findAll("a", {"href" : re.compile(r"{0}/.*".format(url))})
+
+    for result in results[2:]:
+        url = result.attrs['href']
+        print(url)
+
+findAllBrands()
+#findAllModels('https://www.cars-data.com/en/abarth')
+
+# for i in range(1, 80000, 10000):
+#     print(getCarJSON(i))
