@@ -207,11 +207,11 @@ def results_to_json(results):
     dict['cars'] = json_list
     dict['xLabel'] = "price"
     dict['yLabel'] = "enginePower"
-    return json.dumps(dict);
+    return json.dumps(dict)
 
 
 def index(request):
-    connection = None;
+    connection = None
     user_arguments = parse_get(request)
     results = get_results_by_all_parameters(**user_arguments)
     json_list = results_to_json(results)
