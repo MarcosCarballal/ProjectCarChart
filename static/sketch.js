@@ -1,6 +1,7 @@
 
 var results = decodeHtml(window.results);
-var cars = results.cars;
+//var cars = results.cars;
+var cars = [];
 var xLabel = results.xLabel;
 var yLabel = results.yLabel;
 
@@ -14,6 +15,7 @@ function setup() {
   noLoop();
   w = width;
   h = height;
+  createCarTest();
 }
 
 function draw() {
@@ -42,25 +44,92 @@ function drawLabels() {
   textSize(14);
   text("x axis", w/2.3, 5);
   rotate(-PI / 2);
-  text("y axis", w/2.3, 5);
+  text("y axis", w/2.3, 3);
   pop();
 }
 
+var xMin, xMax, yMin, yMax;
 function plotCars() {
-  push();
-  pop();
+  for (index in cars) {
+    drawCar(cars[index]);
+  }
+}
+
+function createCarTest() {
+  cars = [];
+  for (i = 0; i < 30; i++) {
+    cars.push({
+      'bodyType': 'cabriolet',
+      'emissionsCO2': random(25, 200),
+      'seatingCapacity': random(2, 8),
+      'price': random(1000, 50000),
+      'manufacturer': 'Abarth',
+      'model': 'Abarth 124 Spider',
+      'year': random(2000, 2020),
+      'enginePower': random(0, 200)
+    });
+  }
+
+  cars.sort((a, b) => b.price - a.price);
+  xMin = cars[0].price;
+  xMax = cars[cars.length-1].price;
+
+  cars.sort((a, b) => b.enginePower - a.enginePower);
+  yMin = cars[0].enginePower;
+  yMax = cars[cars.length-1].enginePower;
+
+  for (index in cars) {
+    let car = cars[index];
+    let vx = parseFloat(car.price);
+    let vy = parseFloat(car.enginePower);
+    let vg = parseFloat(car.emissionsCO2);
+    car.x = map(vx, xMin, xMax, o, w);
+    car.y = map(vy, yMin, yMax, h-o, 0);
+    car.g = map(vg, 125, 155, 0, 100);
+    car.r = 30;
+  }
 }
 
 function drawCar(car) {
-  let x = 50;
-  let y = 50;
-  let r = 10;
   push();
   stroke(0);
   strokeWeight(1);
-  fill(35, 100, 100);
-  ellipse(x, y, r, r);
+  fill(35, car.g, 100);
+  ellipse(car.x, car.y, car.r, car.r);
   pop();
+}
+
+function drawCarInfo(car) {
+  push();
+  translate(car.x, car.y);
+  rectMode(CENTER);
+  fill(35, car.g, 100, 80);
+  stroke(0);
+  strokeWeight(1);
+  rect(0, 0, 160, 100, 5);
+  fill(0);
+  textSize(12);
+  text(car.model + " " + Math.floor(car.year), -65, -30);
+  pop();
+}
+
+function mousePressed() {
+  redraw();
+  for (index in cars) {
+    let car = cars[index];
+    log()
+    let dist = Math.pow((car.x - mouseX), 2) + Math.pow((car.y - mouseY), 2);
+    if (dist < Math.pow(car.r/2, 2)) {
+      drawCarInfo(car);
+      return;
+    }
+  }
+}
+
+function keyPressed() {
+  if (keyCode == 27) {
+    redraw();
+  }
 }
 
 function decodeHtml(html) {
