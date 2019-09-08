@@ -1,10 +1,11 @@
 
-var results = decodeHtml(window.results);
-//var cars = results.cars;
-var cars = [];
+console.log(decodeHtml(window.results));
+var results = JSON.parse(decodeHtml(window.results));
+var cars = results.cars;
 var xLabel = results.xLabel;
 var yLabel = results.yLabel;
 
+var xMin, xMax, yMin, yMax;
 var w, h;
 var o = 25;
 
@@ -15,7 +16,10 @@ function setup() {
   noLoop();
   w = width;
   h = height;
-  createCarTest();
+  console.log(results.cars.length);
+  console.log(xLabel);
+  console.log(yLabel);
+  //createCarTest();
 }
 
 function draw() {
@@ -48,13 +52,13 @@ function drawLabels() {
   pop();
 }
 
-var xMin, xMax, yMin, yMax;
 function plotCars() {
   for (index in cars) {
     drawCar(cars[index]);
   }
 }
 
+// test data
 function createCarTest() {
   cars = [];
   for (i = 0; i < 30; i++) {
@@ -69,7 +73,9 @@ function createCarTest() {
       'enginePower': random(0, 200)
     });
   }
+}
 
+function setupCars() {
   cars.sort((a, b) => b.price - a.price);
   xMin = cars[0].price;
   xMax = cars[cars.length-1].price;
