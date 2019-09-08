@@ -1,7 +1,8 @@
 
-console.log(decodeHtml(window.results));
 var results = JSON.parse(decodeHtml(window.results));
+
 var cars = results.cars;
+console.log(cars[0]);
 var xLabel = results.xLabel;
 var yLabel = results.yLabel;
 
@@ -16,9 +17,10 @@ function setup() {
   noLoop();
   w = width;
   h = height;
-  console.log(results.cars.length);
+  console.log(cars.length);
   console.log(xLabel);
   console.log(yLabel);
+  setupCars();
   //createCarTest();
 }
 
@@ -46,9 +48,9 @@ function drawLabels() {
   push();
   translate(o/2, h-o/2);
   textSize(14);
-  text("x axis", w/2.3, 5);
+  text(xLabel, w/2.3, 5);
   rotate(-PI / 2);
-  text("y axis", w/2.3, 3);
+  text(yLabel, w/2.3, 3);
   pop();
 }
 
@@ -75,6 +77,27 @@ function createCarTest() {
   }
 }
 
+// function setupCars() {
+//   cars.sort((a, b) => b[xLabel] - a[xLabel]);
+//   xMin = cars[0][xLabel];
+//   xMax = cars[cars.length-1][xLabel];
+//
+//   cars.sort((a, b) => b[yLabel] - a[yLabel]);
+//   yMin = cars[0][yLabel];
+//   yMax = cars[cars.length-1][yLabel];
+//
+//   for (index in cars) {
+//     let car = cars[index];
+//     let vx = parseFloat(car[xLabel]);
+//     let vy = parseFloat(car[yLabel]);
+//     let vg = parseFloat(car.emissionsCO2);
+//     car.x = map(vx, xMin, xMax, o, w);
+//     car.y = map(vy, yMin, yMax, h-o, 0);
+//     car.g = map(vg, 125, 155, 0, 100);
+//     car.r = 5;
+//   }
+// }
+
 function setupCars() {
   cars.sort((a, b) => b.price - a.price);
   xMin = cars[0].price;
@@ -86,17 +109,19 @@ function setupCars() {
 
   for (index in cars) {
     let car = cars[index];
+    console.log(car.price);
     let vx = parseFloat(car.price);
     let vy = parseFloat(car.enginePower);
     let vg = parseFloat(car.emissionsCO2);
     car.x = map(vx, xMin, xMax, o, w);
     car.y = map(vy, yMin, yMax, h-o, 0);
     car.g = map(vg, 125, 155, 0, 100);
-    car.r = 30;
+    car.r = 15;
   }
 }
 
 function drawCar(car) {
+  console.log("draw: "+car.x+" "+car.y);
   push();
   stroke(0);
   strokeWeight(1);

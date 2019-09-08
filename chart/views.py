@@ -9,26 +9,23 @@ DEFAULT_PASS = 'pass'
 DEFAULT_DB = 'cars'
 UNIX_SOCKET = '/cloudsql/pennapps-xx-252216:us-central1:pennapps-xx-instance'
 
-    
-
-
 
 def get_results_by_all_parameters(**kwargs):
-    bodyType = None;fuelType = None; minYear = None; maxYear = None; minPrice = None; maxPrice = None; minSeats = None; maxSeats = None; minHorsePower = None; maxHorsePower = None; minEmissions = None; maxEmissions = None 
+    bodyType = None;fuelType = None; minYear = None; maxYear = None; minPrice = None; maxPrice = None; minSeats = None; maxSeats = None; minHorsePower = None; maxHorsePower = None; minEmissions = None; maxEmissions = None
 
     for key,value in kwargs.items():
-                    if key == "bodyType": bodyType  = value 
-                    if key == "fuelType": fuelType  = value 
-                    if key == "minYear": minYear  = value 
-                    if key == "maxYear": maxYear  = value 
-                    if key == "minPrice": minPrice  = value 
-                    if key == "maxPrice": maxPrice  = value 
-                    if key == "minSeats": minSeats  = value 
-                    if key == "maxSeats": maxSeats  = value 
-                    if key == "minHorsePower": minHorsePower  = value 
-                    if key == "maxHorsePower": maxHorsePower  = value 
-                    if key == "minEmissions": minEmissions  = value 
-                    if key == "maxEmissions": maxEmissions  = value 
+                    if key == "bodyType": bodyType  = value
+                    if key == "fuelType": fuelType  = value
+                    if key == "minYear": minYear  = value
+                    if key == "maxYear": maxYear  = value
+                    if key == "minPrice": minPrice  = value
+                    if key == "maxPrice": maxPrice  = value
+                    if key == "minSeats": minSeats  = value
+                    if key == "maxSeats": maxSeats  = value
+                    if key == "minHorsePower": minHorsePower  = value
+                    if key == "maxHorsePower": maxHorsePower  = value
+                    if key == "minEmissions": minEmissions  = value
+                    if key == "maxEmissions": maxEmissions  = value
 
     #Determine how many predicates there are to begin with. Keeps track of predicates not yet put into select string
     predicate_count = 0
@@ -117,7 +114,10 @@ def get_results_by_all_parameters(**kwargs):
 
     print("SQL: " + sql)
 
-    results = []
+    results = {
+        'cars':[],
+
+    }
 
     try:
         #On the Google AppEngine
@@ -156,9 +156,10 @@ def parse_get(request):
     # Create dict and add the keys guaranteed to have vals
     search_dict = {
         "bodyType": request.GET.get("bodyType"),
-        "fuelType": request.GET.get("fuelType")
-        }
-
+        "fuelType": request.GET.get("fuelType"),
+        "xLabel": request.GET.get("xLabel"),
+        "yLabel": request.GET.get("yLabel")
+    }
 
     for key in keys:
         val = ""
@@ -175,20 +176,21 @@ def parse_get(request):
 def results_to_json(results):
 
     keys = [
-        'bodyType', 
-        'emissionsCO2', 
-        'seatingCapacity', 
-        'maxSpeed', 
-        'fuelCapacity', 
-        'fuelType', 
-        'price', 
-        'fuelConsumption', 
-        'manufacturer', 
-        'model', 
-        'year', 
-        'enginePower'
+        'bodyType',
+        'emissionsCO2',
+        'maxSpeed',
+        'fuelCapacity',
+        'price',
+        'fuelConsumption',
+        'manufacturer',
+        'model',
+        'enginePower',
+        'seatingCapacity',
+        'fuelType',
+        'year',
     ]
 
+    dict = {}
     json_list = []
 
     for result in results:
@@ -199,10 +201,15 @@ def results_to_json(results):
             new_dict[key] = result[i]
             i += 1
 
-        json_list.append(json.dumps(new_dict))
+        json_list.append(new_dict)
 
-    return json_list
-    
+    # return json_list
+
+    dict['cars'] = json_list
+    dict['xLabel'] = "price"
+    dict['yLabel'] = "enginePower"
+    return json.dumps(dict);
+
 
 def index(request):
     connection = None;
