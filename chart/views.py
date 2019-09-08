@@ -16,6 +16,8 @@ def get_results_by_all_parameters(**kwargs):
     for key,value in kwargs.items():
                     if key == "bodyType": bodyType  = value
                     if key == "fuelType": fuelType  = value
+                    if key == "bodyType": xLabel  = value
+                    if key == "fuelType": yLabel  = value
                     if key == "minYear": minYear  = value
                     if key == "maxYear": maxYear  = value
                     if key == "minPrice": minPrice  = value
@@ -116,7 +118,8 @@ def get_results_by_all_parameters(**kwargs):
 
     results = {
         'cars':[],
-
+        'xLabel':xLabel,
+        'yLabel':yLabel
     }
 
     try:
@@ -131,10 +134,6 @@ def get_results_by_all_parameters(**kwargs):
         cur.execute(sql)
         results = cur.fetchall()
     return results
-
-
-
-
 
 
 # Parse GET contents into dict

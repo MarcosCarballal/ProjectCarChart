@@ -1,6 +1,15 @@
 
 var results = JSON.parse(decodeHtml(window.results));
 
+if (!results) {
+  results = {
+    cars: [],
+    xLabel: "price",
+    yLabel: "enginePower"
+  }
+}
+
+
 var cars = results.cars;
 console.log(cars[0]);
 var xLabel = results.xLabel;
@@ -21,7 +30,6 @@ function setup() {
   console.log(xLabel);
   console.log(yLabel);
   setupCars();
-  //createCarTest();
 }
 
 function draw() {
@@ -99,29 +107,42 @@ function createCarTest() {
 // }
 
 function setupCars() {
-  cars.sort((a, b) => b.price - a.price);
+  if (!cars) {
+    cars = [];
+    return;
+  }
+
+  cars.sort((a, b) => a.price - b.price);
   xMin = cars[0].price;
   xMax = cars[cars.length-1].price;
 
-  cars.sort((a, b) => b.enginePower - a.enginePower);
+  cars.sort((a, b) => a.enginePower - b.enginePower);
   yMin = cars[0].enginePower;
   yMax = cars[cars.length-1].enginePower;
 
+  while (cars[0].enginePower == 0) {
+    cars.shift();
+  }
+
+  cars.sort((a, b) => a.emissionsCO2 - b.emissionsCO2);
+  eMin = cars[0].emissionsCO2;
+  eMax = cars[cars.length-1].emissionsCO2;
+  console.log(eMin);
+  console.log(eMax);
+
   for (index in cars) {
     let car = cars[index];
-    console.log(car.price);
     let vx = parseFloat(car.price);
     let vy = parseFloat(car.enginePower);
     let vg = parseFloat(car.emissionsCO2);
-    car.x = map(vx, xMin, xMax, o, w);
-    car.y = map(vy, yMin, yMax, h-o, 0);
-    car.g = map(vg, 125, 155, 0, 100);
+    car.x = map(vx, xMin, xMax, o, w-o);
+    car.y = map(vy, yMin, yMax, h-o, o);
+    car.g = map(vg, 50, 350, 0, 100);
     car.r = 15;
   }
 }
 
 function drawCar(car) {
-  console.log("draw: "+car.x+" "+car.y);
   push();
   stroke(0);
   strokeWeight(1);
@@ -131,16 +152,29 @@ function drawCar(car) {
 }
 
 function drawCarInfo(car) {
+  let iw = 160;
+  let ih = 100;
+  let tx = car.x;
+  let ty = car.y;
+  let o = 10;
+  if (tx < iw/2 + o) { tx = iw/2 + o; }
+  if (tx > w - iw/2 - o) { tx = w - iw/2 - o; }
+  if (ty < ih/2 + o) { ty = ih/2 + o; }
+  if (ty > h - ih/2 - o) { ty = h - ih/2 - o; }
   push();
-  translate(car.x, car.y);
+  translate(tx, ty);
   rectMode(CENTER);
   fill(35, car.g, 100, 80);
   stroke(0);
   strokeWeight(1);
+
   rect(0, 0, 160, 100, 5);
+
   fill(0);
   textSize(12);
   text(car.model + " " + Math.floor(car.year), -65, -30);
+  text(car.price + " (euros)", -65, -15);
+  text(car.enginePower + " kwH", -65, 0);
   pop();
 }
 
