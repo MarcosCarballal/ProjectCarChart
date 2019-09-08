@@ -1,12 +1,19 @@
 import requests
 import json
 import re
+import pymysql
 from ttictoc import TicToc
 from bs4 import BeautifulSoup
 
-baseurl = 'https://www.cars-data.com/en/abarth-124-spider-1.4-multiair-16v-specs'
+DEFAULT_HOST = '35.226.24.18'
+DEFAULT_USER = 'root'
+DEFAULT_PASS = 'pass'
+DEFAULT_DB = 'cars'
+UNIX_SOCKET = '/cloudsql/pennapps-xx-252216:us-central1:pennapps-xx-instance'
 
-cars = []
+connection = pymysql.connect(host = DEFAULT_HOST, user = DEFAULT_USER,  password = DEFAULT_PASS, db = DEFAULT_DB)
+
+baseurl = 'https://www.cars-data.com/en/abarth-124-spider-1.4-multiair-16v-specs'
 
 def parseIndividualCarInfo(carID):
     rawData = getRawResponse(carID)
@@ -101,7 +108,7 @@ def findAllYears(url):
     urlPart2 = url.rsplit('/',1)[-1]
     results = soup.findAll("a", {"href" : re.compile(r"{0}-{1}.*".format(urlPart1, urlPart2))})
 
-    for result in results:      #each year
+    for result in results[:1]:      #get rid of [:...] to check all         #each year
         url = result.attrs['href']
         findAllVariations(url)
 
@@ -111,12 +118,36 @@ def findAllVariations(url):
     results = soup.findAll("a", {"href" : re.compile(r"specs/.*")})
 
     for result in results:      #each variation
-        url = result.attrs['href']
+        # url = result.attrs['href']
         carID = url.rsplit('/',1)[-1]
-        print(getCarJSON(carID))
+        fuelType = result.parent.parent.next_sibling.next_sibling.contents[0].split(',', 1)[1].strip()
+        year = result.attrs['title'].split(' ', 1)[0]
+        # print(getCarJSON(carID))
+        # saveCarSQL(getCarJSON(carID))
 
 
-# findAllBrands()
+def saveCarSQL(carJSON):
+    with connection.cursor() as cursor:
+        # save car object
+
+        sql = """INSERT INTO `cars_info` (`bodyType`, `emissionsCO2`, `maxspeed`, `fuelcapacity`,
+        `price`, `fuelconsumption`, `manufacturer`, `model`, `enginePower`, `seats`, `fueltype`, `year`)
+        VALUES ('{}', {}, {}, {}, {}, {}, '{}', '{}', {}, {}, '{}', {})""".format(
+            carJSON['bodyType'], carJSON['emissionsCO2'], carJSON['maxSpeed'], carJSON['fuelCapacity'],
+            carJSON['price'], carJSON['fuelConsumption'], carJSON['manufacturer'], carJSON['model'],
+            carJSON['enginePower'], carJSON['seatingCapacity'], carJSON['fuelType'], carJSON['year']
+        )
+        cursor.execute(sql)
+
+    connection.commit()
+
+def scrape():
+    try:
+        findAllBrands()
+    finally:
+        connection.close()
+
+scrape()
 # findAllModels('https://www.cars-data.com/en/abarth')
 # findAllYears('https://www.cars-data.com/en/ford/focus')
 # findAllVariations('https://www.cars-data.com/en/ford-focus-1998/753')
