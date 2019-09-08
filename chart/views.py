@@ -10,44 +10,127 @@ DEFAULT_DB = 'cars'
 UNIX_SOCKET = '/cloudsql/pennapps-xx-252216:us-central1:pennapps-xx-instance'
 
     
-def get_results_by_all_parameters(self,**kwargs):
-            bodyType = None;fuelType = None; minYear = None; maxYear = None; minPrice = None; maxPrice = None; minPrice = None; maxPrice = None; minSeats = None; maxSeats = None; minHorsePower = None; maxHorsePower = None; minEmissions = None; maxEmissions = None 
 
-            for key,value in kwargs.items():
-                            if key == "bodyType": bodyType  = value 
-                            if key == "fuelType": fuelType  = value 
-                            if key == "minYear": minYear  = value 
-                            if key == "maxYear": maxYear  = value 
-                            if key == "minPrice": minPrice  = value 
-                            if key == "maxPrice": maxPrice  = value 
-                            if key == "minSeats": minSeats  = value 
-                            if key == "maxSeats": maxSeats  = value 
-                            if key == "minHorsePower": minHorsePower  = value 
-                            if key == "maxHorsePower": maxHorsePower  = value 
-                            if key == "minEmissions": minEmissions  = value 
-                            if key == "maxEmissions": maxEmissions  = value 
 
-            #Determine how many predicates there are to begin with. Keeps track of predicates not yet put into select string
-            predicate_count = 0
-            if bodyType is not None : predicate_count+=1
-            if fuelType is not None: predicate_count+=1
-            if name is not None: predicate_count+=1
-            if boot_mode is not None: predicate_count+=1
-            if build is not None: predicate_count+=1
-            if pon_mode is not None: predicate_count+=1
-            if device is not None: predicate_count+=1
-            if release is not None: predicate_count+=1
-            total_parameters = predicate_count
 
-            print("Predicate Count: " + str(predicate_count))
+def get_results_by_all_parameters(**kwargs):
+    bodyType = None;fuelType = None; minYear = None; maxYear = None; minPrice = None; maxPrice = None; minSeats = None; maxSeats = None; minHorsePower = None; maxHorsePower = None; minEmissions = None; maxEmissions = None 
 
-            select = "SELECT * FROM " + self.test_results_table_name + " WHERE"
-            select += self.get_where_qualifier_by_all_parameters(total_parameters,status,requirement,name ,boot_mode , build ,pon_mode,device ,release)
-            if(total_parameters == 0):
-                    select = select.split('WHERE')[0]
-            results = self._db_fetch_rows(select)
-    
-            return results
+    for key,value in kwargs.items():
+                    if key == "bodyType": bodyType  = value 
+                    if key == "fuelType": fuelType  = value 
+                    if key == "minYear": minYear  = value 
+                    if key == "maxYear": maxYear  = value 
+                    if key == "minPrice": minPrice  = value 
+                    if key == "maxPrice": maxPrice  = value 
+                    if key == "minSeats": minSeats  = value 
+                    if key == "maxSeats": maxSeats  = value 
+                    if key == "minHorsePower": minHorsePower  = value 
+                    if key == "maxHorsePower": maxHorsePower  = value 
+                    if key == "minEmissions": minEmissions  = value 
+                    if key == "maxEmissions": maxEmissions  = value 
+
+    #Determine how many predicates there are to begin with. Keeps track of predicates not yet put into select string
+    predicate_count = 0
+    if bodyType is not None : predicate_count+=1
+    if fuelType is not None: predicate_count+=1
+    if minYear is not None: predicate_count+=1
+    if maxYear is not None: predicate_count +=1
+    if minPrice is not None: predicate_count+=1
+    if maxPrice is not None: predicate_count+=1
+    if minSeats is not None: predicate_count+=1
+    if maxSeats is not None: predicate_count+=1
+    if minHorsePower is not None: predicate_count+=1
+    if maxHorsePower is not None: predicate_count+=1
+    if minEmissions is not None: predicate_count+=1
+    if maxEmissions is not None: predicate_count+=1
+
+
+    print("Predicate Count: " + str(predicate_count))
+    sql = ""
+    sql += "SELECT * from cars.cars_info WHERE "
+### GET WHERE QUALIFIER
+    num_params_left = predicate_count
+    if(predicate_count==0):
+        sql+= 'year >=2015'
+    else:
+        if bodyType is not None:
+            sql += "bodyType="+ '"' +str(bodyType) + '"'
+            if(num_params_left > 1):
+                sql+= ' AND '
+                num_params_left = num_params_left -1 #decrement
+        if fuelType is not None:
+            sql += "fuelType="+ '"' + str(fuelType) + '"'
+            if(num_params_left > 1):
+                sql+= ' AND '
+                num_params_left = num_params_left -1 #decrement
+        if minYear is not None:
+            sql += "year >=" + minYear
+            if(num_params_left > 1):
+                sql+= ' AND '
+                num_params_left = num_params_left -1 #decrement
+        if maxYear is not None:
+            sql += "year <="+maxYear
+            if(num_params_left > 1):
+                sql+= ' AND '
+                num_params_left = num_params_left -1 #decrement
+        if minPrice is not None:
+            sql += "price >="+ minPrice
+            if(num_params_left > 1):
+                sql+= ' AND '
+                num_params_left = num_params_left -1 #decrement
+        if maxPrice is not None:
+            sql += "price <="+ maxPrice
+            if(num_params_left > 1):
+                sql+= ' AND '
+                num_params_left = num_params_left -1 #decrement
+        if minSeats is not None:
+            sql += "seats>="+ minSeats
+            if(num_params_left > 1):
+                sql+= ' AND '
+                num_params_left = num_params_left -1 #decrement
+        if maxSeats is not None:
+            sql += "seats <="+ maxSeats
+            if(num_params_left > 1):
+                sql+= ' AND '
+                num_params_left = num_params_left -1 #decrement
+        if minHorsePower is not None:
+            sql += "enginePower >="+ minHorsePower
+            if(num_params_left > 1):
+                sql+= ' AND '
+                num_params_left = num_params_left -1 #decrement
+        if maxHorsePower is not None:
+            sql += "enginePower <="+maxHorsePower
+            if(num_params_left > 1):
+                sql+= ' AND '
+                num_params_left = num_params_left -1 #decrement
+        if minEmissions is not None:
+            sql += "emissionsCO2 >="+minEmissions
+            if(num_params_left > 1):
+                sql+= ' AND '
+                num_params_left = num_params_left -1 #decrement
+        if maxEmissions is not None:
+            sql += "emissionsCO2 <="+maxEmissions
+            if(num_params_left > 1):
+                sql+= ' AND '
+                num_params_left = num_params_left -1 #decrement
+
+    print("SQL: " + sql)
+
+    results = []
+
+    try:
+        #On the Google AppEngine
+        connection = pymysql.connect(host = DEFAULT_HOST, user = DEFAULT_USER, password = DEFAULT_PASS, db = DEFAULT_DB,unix_socket = UNIX_SOCKET)
+    except:
+        # Ona local machine
+        print("Connecting with unix socket failed... Attempting to connect as a local host... Look at views.py if you're confused")
+        connection = pymysql.connect(host = DEFAULT_HOST, user = DEFAULT_USER,  password = DEFAULT_PASS, db = DEFAULT_DB)
+    finally:
+        cur = connection.cursor()
+        cur.execute(sql)
+        results = cur.fetchall()
+    return results
 
 
 
@@ -123,22 +206,10 @@ def results_to_json(results):
 
 def index(request):
     connection = None;
-    try:
-        #On the Google AppEngine
-        connection = pymysql.connect(host = DEFAULT_HOST, user = DEFAULT_USER, password = DEFAULT_PASS, db = DEFAULT_DB,unix_socket = UNIX_SOCKET)
-    except:
-        # Ona local machine
-        print("Connecting with unix socket failed... Attempting to connect as a local host... Look at views.py if you're confused")
-        connection = pymysql.connect(host = DEFAULT_HOST, user = DEFAULT_USER,  password = DEFAULT_PASS, db = DEFAULT_DB)
-    finally:
+    user_arguments = parse_get(request)
+    results = get_results_by_all_parameters(**user_arguments)
+    json_list = results_to_json(results)
 
-        sql = "SELECT * FROM cars.cars_info"
-        cur = connection.cursor()
-        cur.execute(sql)
-        results = cur.fetchall()
-        json_list = results_to_json(results)
-
-        context = {"results":json_list}
-        return render_to_response('index_t.html',context)
-
+    context = {"results":json_list}
+    return render_to_response('index_t.html',context)
 # Create your views here.

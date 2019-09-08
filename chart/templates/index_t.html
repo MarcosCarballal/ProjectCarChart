@@ -65,7 +65,7 @@
                   <div class="col">
                     <h5>Fuel Type</h5>
                     <div class="radio">
-                      <input type="radio" name="fuelType" value="gas" checked> Gas<br>
+                      <input type="radio" name="fuelType" value="petrol" checked> Petrol<br>
                       <input type="radio" name="fuelType" value="hybrid"> Hybrid<br>
                       <input type="radio" name="fuelType" value="electric"> Electric<br>
                       <input type="radio" name="fuelType" value="diesel"> Diesel<br>
@@ -103,7 +103,7 @@
                   </div>
                 </div>
 
-                <h5>Horsepower</h5>
+                <h5>Power (kWH)</h5>
                 <div class="row">
                   <div class="col">
                     <input type="text" class="form-control" placeholder="min" name="minHorsePower">
@@ -113,13 +113,42 @@
                   </div>
                 </div>
 
-                <h5>CO<sup>2</sup> Emissions</h5>
+                <h5>CO<sub>2</sub> Emissions</h5>
                 <div class="row">
                   <div class="col">
                     <input type="text" class="form-control" placeholder="min" name="minEmissions">
                   </div>
                   <div class="col">
                     <input type="text" class="form-control" placeholder="max" name="maxEmissions">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <div class="form-group">
+                      <h5>X-Axis</h5>
+                        <select class="custom-select" name="xLabel" id="exampleFormControlSelect1">
+                          <option value="price">Price</option>
+                          <option value="year">Year</option>
+                          <option value="seats">Seating Capacity</option>
+                          <option value="horsepower">Horsepower</option>
+                          <option value="emissions">CO2 Emissions</option>
+                        </select>
+                      </input>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <div class="form-group">
+                      <h5>Y-Axis</h5>
+                        <select class="custom-select" name="yLabel" id="exampleFormControlSelect1">
+                          <option value="horsepower">Horsepower</option>
+                          <option value="price">Price</option>
+                          <option value="seats">Seating Capacity</option>
+                          <option value="year">Year</option>
+                          <option value="emissions">CO2 Emissions</option>
+                        </select>
+                      </input>
+                    </div>
                   </div>
                 </div>
 
