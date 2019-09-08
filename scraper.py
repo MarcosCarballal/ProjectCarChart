@@ -2,6 +2,7 @@ import requests
 import json
 import re
 import pymysql
+import operator
 from ttictoc import TicToc
 from bs4 import BeautifulSoup
 
@@ -116,14 +117,20 @@ def findAllVariations(url):
     rawResponse = requests.get(url)
     soup = getSoup(rawResponse)
     results = soup.findAll("a", {"href" : re.compile(r"specs/.*")})
+    variations = []
 
     for result in results:      #each variation
-        # url = result.attrs['href']
+        url = result.attrs['href']
         carID = url.rsplit('/',1)[-1]
         fuelType = result.parent.parent.next_sibling.next_sibling.contents[0].split(',', 1)[1].strip()
         year = result.attrs['title'].split(' ', 1)[0]
-        # print(getCarJSON(carID))
-        # saveCarSQL(getCarJSON(carID))
+
+        carTuple = (carID, fuelType, year)
+        variations.append(carTuple)
+
+    variations.sort(key=lambda x: (x[2],x[1]), reverse=True)
+    saveCarSQL(getCarJSON(variations[0][0]))
+    print(url)
 
 
 def saveCarSQL(carJSON):
