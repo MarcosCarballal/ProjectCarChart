@@ -47,34 +47,63 @@
             <div class="col" style="text-align: left">
               <h2 style="margin-bottom: 20px;">Filters</h2>
 
-              <form id="filter-form" method="GET" action="/cars/" >
+              <form id="filter-form" method="GET" action="/cars/">
 
                 <h5>Body Type</h5>
-                <div class="form-check">
-                  <input type="checkbox" value="sedan" checked> Sedan<br>
-                  <input type="checkbox" name="bodytype2" value="suv"> SUV<br>
-                  <input type="checkbox" name="bodytype3" value="hatchback"> Hatchback<br>
+                <div class="radio">
+                  <input type="radio" value="sedan" value="true" checked> Sedan<br>
+                  <input type="radio" name="suv" value="true"> SUV<br>
+                  <input type="radio" name="hatchback" value="true"> Hatchback<br>
+                  <input type="radio" name="cabriolet" value="true"> Cabriolet<br>
                 </div>
 
                 <h5>Fuel Type</h5>
-                <div class="form-check">
-                  <input type="checkbox" name="fueltype1" value="gas"> Gas<br>
-                  <input type="checkbox" name="fueltype2" value="hybrid"> Hybrid<br>
-                  <input type="checkbox" name="fueltype3" value="electric" checked> Electric<br>
-                  <input type="checkbox" name="fueltype4" value="diesel" checked> Diesel<br>
+                <div class="radio">
+                  <input type="radio" name="gas" value="true" checked> Gas<br>
+                  <input type="radio" name="hybrid" value="true"> Hybrid<br>
+                  <input type="radio" name="electric" value="true"> Electric<br>
+                  <input type="radio" name="diesel" value="true"> Diesel<br>
                 </div>
 
-                <h5>Minimum seating capacity</h5>
-                <span>2 </span><input style="margin-left:10px;margin-right:10px;" type="range" name="minSeats" min="2" max="8"><span> 8</span>
+                <h5>Year</h5>
+                <div class="row">
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="min" name="minYear">
+                  </div>
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="max" name="maxYear">
+                  </div>
+                </div>
 
-                <h5>Minimum Horsepower</h5>
-                <span>10 </span><input style="margin-left:10px;margin-right:10px;" type="range" name="minHorsePower" min="10" max="300"><span> 300</span>
+                <h5>Price</h5>
+                <div class="row">
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="min" name="minPrice">
+                  </div>
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="max" name="maxPrice">
+                  </div>
+                </div>
 
-                <h5>Maximum Price</h5>
-                <span>0</span><input style="margin-left:10px;margin-right:10px;" type="range" name="maxPrice" min="0" max="50000"><span>500000</span>
+                <h5>Seating Capacity</h5>
+                <div class="row">
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="min" name="minSeats">
+                  </div>
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="max" name="maxSeats">
+                  </div>
+                </div>
 
-                <h5>Oldest Year</h5>
-                <span>1900</span><input style="margin-left:10px;margin-right:10px;" type="range" name="oldestYear" min="1900" max="2019"><span>2019</span>
+                <h5>Horsepower</h5>
+                <div class="row">
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="min" name="minHorsePower">
+                  </div>
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="max" name="maxHorsePower">
+                  </div>
+                </div>
 
               </form>
 
@@ -97,7 +126,7 @@
 
     <hr>
 
-    <div class="container">
+    <div class="container" style="text-align:right">
       <div class="row">
         <div class="col">
           <p>Made by Efe, Mac, Marcos, and Riley for PennApps XX</p>
