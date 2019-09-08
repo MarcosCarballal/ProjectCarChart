@@ -7,11 +7,12 @@ baseurl = 'https://www.cars-data.com/en/abarth-124-spider-1.4-multiair-16v-specs
 
 cars = []
 
-def getAllCarInfo(carID):
+def parseAllCarInfo(carID):
     rawData = getRawResponse(carID)
     soup = getSoup(rawData)
     jsonData = getJSONData(soup)
-    return jsonData
+    price = getPrice(soup)
+    return jsonData, price
 
 def getRawResponse(carID):
     url = "{}/{}/tech".format(baseurl, carID)
@@ -25,9 +26,12 @@ def getJSONData(soup):
     data = result.contents[0]
     return json.loads(data.string)
 
-def scrape():
-    for i in range(1, 2):
-        jsonData = getAllCarInfo(carID=i)
+def getPrice(soup):
+    result = soup.find("dt", string="price:").next_sibling.contents[0].split()[1].replace('.', '')  #ugly i know
+    return result
+
+def getCarJSON(carID):
+        jsonData, price = parseAllCarInfo(carID)
 
         engineInfo = jsonData['vehicleEngine'] if jsonData['vehicleEngine'] else None
         enginePower = None
@@ -46,7 +50,7 @@ def scrape():
 
         fuelConsumption = jsonData['fuelConsumption'] if jsonData['fuelConsumption'] else None
         if fuelConsumption:
-            fuelConsumption = fuelConsumption.split()[0]
+            fuelConsumption = fuelConsumption.split()[0].replace(',', '.')
 
         emissionsCO2 = jsonData['emissionsCO2'] if jsonData['emissionsCO2'] else None
         if emissionsCO2:
@@ -58,13 +62,15 @@ def scrape():
                 "maxSpeed": maxSpeed,
                 "fuelCapacity": fuelCapacity,
                 "fuelType": jsonData['fuelType'] if jsonData['fuelType'] else None,
-                "price": "46760",
+                "price": price,
                 "fuelConsumption": fuelConsumption,
                 "manufacturer": jsonData['manufacturer']['name'] if jsonData['manufacturer']['name'] else None,
                 "model": jsonData['model'] if jsonData['model'] else None,
                 "year": jsonData['vehicleModelDate'] if jsonData['vehicleModelDate'] else None,
-                "enginePower": enginePower,
-                "energyRating": "F"
+                "enginePower": enginePower
                 }
 
-scrape()
+        return car
+
+for i in range(1, 80000, 10000):
+    print(getCarJSON(i))
