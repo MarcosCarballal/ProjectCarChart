@@ -1,10 +1,24 @@
+{% load static %}
 <!doctype html>
-<html>
-	<head>
-	<title> "My Django template "</title>
-	</head>
-	<body>
-		"My Django body"
-	</body>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static styles.css%}">
 
+    <title>Car Chart</title>
+
+    <script src="{% static 'addons/p5.min.js'%}"></script>
+
+    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/p5.js"></script> -->
+
+    <script src="{% static 'sketch.js'%}"></script>
+
+  </head>
+  <body>
+	{{ results }}
+    "THERE SHOULD BE A SCRIPT  BELOW"
+
+  </body>
 </html>
