@@ -80,7 +80,7 @@ def findAllBrands():
     results = soup.findAll("option", {"value" : re.compile(r".+")})
 
     baseurl = 'https://www.cars-data.com/en/'
-    for result in results[:5]:          #get rid of [:5] to check all
+    for result in results[:1]:          #get rid of [:...] to check all     #each brand/make
         make = result.attrs['value']
         url = "{}{}".format(baseurl, make)
         findAllModels(url)
@@ -90,12 +90,36 @@ def findAllModels(url):
     soup = getSoup(rawResponse)
     results = soup.findAll("a", {"href" : re.compile(r"{0}/.*".format(url))})
 
-    for result in results[2:]:
+    for result in results[2:]:      #each model
         url = result.attrs['href']
-        print(url)
+        findAllYears(url)
 
-findAllBrands()
-#findAllModels('https://www.cars-data.com/en/abarth')
+def findAllYears(url):
+    rawResponse = requests.get(url)
+    soup = getSoup(rawResponse)
+    urlPart1 = url.rsplit('/',1)[0]
+    urlPart2 = url.rsplit('/',1)[-1]
+    results = soup.findAll("a", {"href" : re.compile(r"{0}-{1}.*".format(urlPart1, urlPart2))})
+
+    for result in results:      #each year
+        url = result.attrs['href']
+        findAllVariations(url)
+
+def findAllVariations(url):
+    rawResponse = requests.get(url)
+    soup = getSoup(rawResponse)
+    results = soup.findAll("a", {"href" : re.compile(r"specs/.*")})
+
+    for result in results:      #each variation
+        url = result.attrs['href']
+        carID = url.rsplit('/',1)[-1]
+        print(getCarJSON(carID))
+
+
+# findAllBrands()
+# findAllModels('https://www.cars-data.com/en/abarth')
+# findAllYears('https://www.cars-data.com/en/ford/focus')
+# findAllVariations('https://www.cars-data.com/en/ford-focus-1998/753')
 
 # for i in range(1, 80000, 10000):
 #     print(getCarJSON(i))
