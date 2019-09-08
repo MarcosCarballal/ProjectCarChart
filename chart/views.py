@@ -86,6 +86,6 @@ def index(request):
     results = cur.fetchall()
     json_results = results_to_json(results)
     print(json_results)
-    context = {"results":results}
+    context = {"results":json_results}
     return render_to_response('index_t.html',context)
 # Create your views here.
