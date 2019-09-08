@@ -69,24 +69,6 @@ function setup() {
 function draw() {
   background(0, 0, 100);
   graph.draw(325, 25);
-  if (pressed) { drawEllipseAtMouse(); }
-}
-
-function mousePressed() {
-  pressed = true;
-}
-
-function mouseReleased() {
-  pressed = false;
-}
-
-function drawEllipseAtMouse() {
-  push();
-  translate(mouseX, mouseY);
-  noStroke();
-  fill(0);
-  ellipse(0, 0, 30, 30);
-  pop();
 }
 
 function keyPressed() {
