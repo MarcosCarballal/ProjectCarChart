@@ -1,24 +1,63 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static styles.css%}">
-
+    <link rel="stylesheet" href="{%static 'styles.css' %}">
+    <script src="{%static 'sketch.js' %}"> </script>
     <title>Car Chart</title>
-
-    <script src="{% static 'addons/p5.min.js'%}"></script>
-
-    <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/p5.js"></script> -->
-
-    <script src="{% static 'sketch.js'%}"></script>
-
   </head>
   <body>
-	{{ results }}
-    "THERE SHOULD BE A SCRIPT  BELOW"
+    <div class="container">
 
+      <div class="row">
+        <div class="col" style="text-align: center">
+          <h1 style="margin-top: 20px"><i>Project Car Chart</i></h1>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-4" style="align-items: center">
+
+          <div class="row">
+            <div class="col">
+              <p>Number of seats</p>
+              <b>2</b>
+              <input type="range" class="form-control-range">
+              <b>1000</b>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <button type="button" class="btn btn-outline-dark btn-lg">GENERATE</button>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-8" style="align-content: center">
+
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col">
+          Made by Efe, Mac, Marcos, and Riley for PennApps XX
+        </div>
+      </div>
+
+    </div>
   </body>
 </html>
