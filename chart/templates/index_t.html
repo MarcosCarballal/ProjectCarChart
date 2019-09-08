@@ -8,31 +8,50 @@
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <title>Car Chart</title>
     <script src="{% static 'addons/p5.min.js' %}"></script>
-    <script src="{% static 'addons/p5.js' %}"></script>
+    <script>
+      window.results = '{{ results }}';
+      console.log('wrote results');
+    </script>
     <script src="{% static 'sketch.js' %}"></script>
+    <script>
+      function play() {
+        var audio = document.getElementById("audio");
+        audio.play();
+      }
+      function submitForm() {
+        document.getElementById('filter-form').submit();
+      }
+   </script>
   </head>
   <body>
-    <div class="container">
 
+    <!-- HEADER -->
+    <div class="container">
       <div class="row">
         <div class="col" style="text-align: left">
-          <h1 style="margin-top: 20px"><i>Project Car Chart [🚗]</i></h1>
+          <h1 style="margin-top: 20px"><i>Project Car Chart</i><b onclick="play()"> [🚗]</b></h1>
+          <audio id="audio" src="https://ia600605.us.archive.org/8/items/NeverGonnaGiveYouUp/jocofullinterview41.ogg"></audio>
         </div>
       </div>
+    </div>
 
-      <br>
+    <hr>
 
+    <!-- BODY -->
+    <div class="container">
       <div class="row">
-        <div class="col-4">
 
+        <!-- FILTERS -->
+        <div class="col-4">
           <div class="row">
             <div class="col" style="text-align: left">
               <h2 style="margin-bottom: 20px;">Filters</h2>
-              <form>
+
+              <form id="filter-form" method="GET" action="/cars/" >
 
                 <h5>Body Type</h5>
                 <div class="form-check">
-                  <input type="checkbox" name="bodytype1" value="sedan" checked> Sedan<br>
+                  <input type="checkbox" value="sedan" checked> Sedan<br>
                   <input type="checkbox" name="bodytype2" value="suv"> SUV<br>
                   <input type="checkbox" name="bodytype3" value="hatchback"> Hatchback<br>
                 </div>
@@ -45,16 +64,27 @@
                   <input type="checkbox" name="fueltype4" value="diesel" checked> Diesel<br>
                 </div>
 
-                <h5>Seating Capacity</h5>
-                2<input type="range" name="points" min="2" max="8">8
+                <h5>Minimum seating capacity</h5>
+                <span>2 </span><input style="margin-left:10px;margin-right:10px;" type="range" name="minSeats" min="2" max="8"><span> 8</span>
+
+                <h5>Minimum Horsepower</h5>
+                <span>10 </span><input style="margin-left:10px;margin-right:10px;" type="range" name="minHorsePower" min="10" max="300"><span> 300</span>
+
+                <h5>Maximum Price</h5>
+                <span>0</span><input style="margin-left:10px;margin-right:10px;" type="range" name="maxPrice" min="0" max="50000"><span>500000</span>
+
+                <h5>Oldest Year</h5>
+                <span>1900</span><input style="margin-left:10px;margin-right:10px;" type="range" name="oldestYear" min="1900" max="2019"><span>2019</span>
 
               </form>
+
             </div>
           </div>
 
-          <div class="row">
+          <!-- SKETCH -->
+          <div class="row" style="text-align: center; margin-top: 30px">
             <div class="col">
-              <button type="button" class="btn btn-outline-dark btn-lg">GENERATE</button>
+              <button type="button" class="btn btn-outline-dark btn-lg" onclick="submitForm()">GENERATE</button>
             </div>
           </div>
 
@@ -63,14 +93,17 @@
           <div id="p5container"></div>
         </div>
       </div>
+    </div>
 
-      <br>
+    <hr>
 
+    <div class="container">
       <div class="row">
         <div class="col">
-          Made by Efe, Mac, Marcos, and Riley for PennApps XX
+          <p>Made by Efe, Mac, Marcos, and Riley for PennApps XX</p>
         </div>
       </div>
+    </div>
 
     </div>
   </body>
