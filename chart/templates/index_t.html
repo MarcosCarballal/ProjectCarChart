@@ -52,20 +52,25 @@
 
               <form id="filter-form" method="GET" action="/cars/">
 
-                <h5>Body Type</h5>
-                <div class="radio">
-                  <input type="radio" name="bodyType" value="sedan" checked> Sedan<br>
-                  <input type="radio" name="bodyType" value="suv"> SUV<br>
-                  <input type="radio" name="bodyType" value="hatchback"> Hatchback<br>
-                  <input type="radio" name="bodyType" value="cabriolet"> Cabriolet<br>
-                </div>
-
-                <h5>Fuel Type</h5>
-                <div class="radio">
-                  <input type="radio" name="fuelType" value="gas" checked> Gas<br>
-                  <input type="radio" name="fuelType" value="hybrid"> Hybrid<br>
-                  <input type="radio" name="fuelType" value="electric"> Electric<br>
-                  <input type="radio" name="fuelType" value="diesel"> Diesel<br>
+                <div class="row">
+                  <div class="col">
+                    <h5>Body Type</h5>
+                    <div class="radio">
+                      <input type="radio" name="bodyType" value="sedan" checked> Sedan<br>
+                      <input type="radio" name="bodyType" value="suv"> SUV<br>
+                      <input type="radio" name="bodyType" value="hatchback"> Hatchback<br>
+                      <input type="radio" name="bodyType" value="cabriolet"> Cabriolet<br>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <h5>Fuel Type</h5>
+                    <div class="radio">
+                      <input type="radio" name="fuelType" value="gas" checked> Gas<br>
+                      <input type="radio" name="fuelType" value="hybrid"> Hybrid<br>
+                      <input type="radio" name="fuelType" value="electric"> Electric<br>
+                      <input type="radio" name="fuelType" value="diesel"> Diesel<br>
+                    </div>
+                  </div>
                 </div>
 
                 <h5>Year</h5>
@@ -105,6 +110,16 @@
                   </div>
                   <div class="col">
                     <input type="text" class="form-control" placeholder="max" name="maxHorsePower">
+                  </div>
+                </div>
+
+                <h5>CO<sup>2</sup> Emissions</h5>
+                <div class="row">
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="min" name="minEmissions">
+                  </div>
+                  <div class="col">
+                    <input type="text" class="form-control" placeholder="max" name="maxEmissions">
                   </div>
                 </div>
 
