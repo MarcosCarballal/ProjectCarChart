@@ -28,8 +28,11 @@
     <!-- HEADER -->
     <div class="container">
       <div class="row">
-        <div class="col" style="text-align: left">
-          <h1 style="margin-top: 20px"><i>Project Car Chart</i><b onclick="play()"> [🚗]</b></h1>
+        <div class="col-8" style="text-align: left">
+          <h1 style="margin-top: 20px"><i>Project Car Chart</i></h1>
+        </div>
+        <div class="col-4" style="text-align: right">
+          <h1 style="margin-top: 20px"><b onclick="play()">[🚗]</b></h1>
           <audio id="audio" src="https://ia600605.us.archive.org/8/items/NeverGonnaGiveYouUp/jocofullinterview41.ogg"></audio>
         </div>
       </div>
@@ -51,18 +54,18 @@
 
                 <h5>Body Type</h5>
                 <div class="radio">
-                  <input type="radio" value="sedan" value="true" checked> Sedan<br>
-                  <input type="radio" name="suv" value="true"> SUV<br>
-                  <input type="radio" name="hatchback" value="true"> Hatchback<br>
-                  <input type="radio" name="cabriolet" value="true"> Cabriolet<br>
+                  <input type="radio" name="bodyType" value="sedan" checked> Sedan<br>
+                  <input type="radio" name="bodyType" value="suv"> SUV<br>
+                  <input type="radio" name="bodyType" value="hatchback"> Hatchback<br>
+                  <input type="radio" name="bodyType" value="cabriolet"> Cabriolet<br>
                 </div>
 
                 <h5>Fuel Type</h5>
                 <div class="radio">
-                  <input type="radio" name="gas" value="true" checked> Gas<br>
-                  <input type="radio" name="hybrid" value="true"> Hybrid<br>
-                  <input type="radio" name="electric" value="true"> Electric<br>
-                  <input type="radio" name="diesel" value="true"> Diesel<br>
+                  <input type="radio" name="fuelType" value="gas" checked> Gas<br>
+                  <input type="radio" name="fuelType" value="hybrid"> Hybrid<br>
+                  <input type="radio" name="fuelType" value="electric"> Electric<br>
+                  <input type="radio" name="fuelType" value="diesel"> Diesel<br>
                 </div>
 
                 <h5>Year</h5>
