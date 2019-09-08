@@ -1,70 +1,79 @@
-var h = 100;
-var hDelta = 0.1;
-
 var circles = [];
-
 var sliders;
 
+var pressed = false;
+
 var graph = {
+  width: 450,
+  height: 450,
+  axisOffset: 50,  
   xAxis: {
-    label: "",
+    label: "X-AXIS",
     min: 0,
     max: 10,
   },
   yAxis: {
-    label: "",
+    label: "Y-AXIS",
     min: 0,
     max: 10,
   },
   data: [],
   draw: (x, y) => {
+  
+    let w = graph.width;
+    let h = graph.height;
+    let off = graph.axisOffset;
+    let xLabel = graph.xAxis.label;
+    let yLabel = graph.yAxis.label;
+    let t = 30;
+    
+    // graph outline & axes
     push();
+    
     translate(x, y);
+    
     noFill();
     stroke(0);
     strokeWeight(3);
-
-    rect(0, 0, 300, 600);
-    line(-50, 0, -50, 600)
-
+    rect(0, 0, w, h);
+    line(-off, 0, -off, h);
+    line(0, h + off, w, h + off);
+    
+    // labels
+    noStroke();
+    fill(0);
+    textSize(t);
+    
+    push();
+    translate(0, h);
+    rotate(-PI / 2);
+    text(yLabel, 0, -off-10);
+    pop();
+    
+    push();
+    translate(0, h);
+    text(xLabel, 0, off+t);
+    pop();
+    
     pop();
   }
 };
 
 function setup() {
-  //var canvas = createCanvas(500, 300);
-  var canvas = createCanvas(windowWidth, windowHeight);
-  //var x = (windowWidth - width) / 2;
-  //var y = (windowHeight - height) / 2;
-  //canvas.parent('p5container');
-  //canvas.position(x, y);
-  colorMode(RGB, 255);
+  var canvas = createCanvas(500, 500);
+  canvas.parent('p5container');
+  colorMode(HSB, 100);
+  noLoop();
 }
 
 function draw() {
-  background(193, 255, 190, 90);
-  stroke(200, 50, 50);
-  strokeWeight(2);
-
-  circles.push({
-    x: random(0, width),
-    y: random(0, height),
-    r: random(20, 50),
-  });
-
-  graph.draw(100, 100);
-
-  circles.forEach((c) => ellipse(c.x, c.y, c.r, c.r));
-  if (circles.length > 30) { circles.shift(); }
+  background(0, 0, 100);
+  graph.draw(325, 25);
 }
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-}
-
-function createSlider() {
-  return {
-    // todo
+function keyPressed() {
+  if (keyCode == 32) {
+    redraw();
   }
 }
 
