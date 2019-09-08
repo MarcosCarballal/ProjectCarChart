@@ -88,7 +88,7 @@ def findAllBrands():
     results = soup.findAll("option", {"value" : re.compile(r".+")})
 
     baseurl = 'https://www.cars-data.com/en/'
-    for result in results[:1]:          #get rid of [:...] to check all     #each brand/make
+    for result in results:          #get rid of [:...] to check all     #each brand/make
         make = result.attrs['value']
         url = "{}{}".format(baseurl, make)
         findAllModels(url)
@@ -109,7 +109,7 @@ def findAllYears(url):
     urlPart2 = url.rsplit('/',1)[-1]
     results = soup.findAll("a", {"href" : re.compile(r"{0}-{1}.*".format(urlPart1, urlPart2))})
 
-    for result in results[:1]:      #get rid of [:...] to check all         #each year
+    for result in results:      #get rid of [:...] to check all         #each year
         url = result.attrs['href']
         findAllVariations(url)
 
@@ -129,8 +129,18 @@ def findAllVariations(url):
         variations.append(carTuple)
 
     variations.sort(key=lambda x: (x[2],x[1]), reverse=True)
-    saveCarSQL(getCarJSON(variations[0][0]))
     print(url)
+    try:
+        carJSON = getCarJSON(variations[0][0])
+
+        clean = True
+        for x in carJSON:
+            if carJSON[x] == None:
+                clean = False
+        if clean:
+            saveCarSQL(carJSON)
+    except:
+        print("big skip")
 
 
 def saveCarSQL(carJSON):
@@ -144,9 +154,16 @@ def saveCarSQL(carJSON):
             carJSON['price'], carJSON['fuelConsumption'], carJSON['manufacturer'], carJSON['model'],
             carJSON['enginePower'], carJSON['seatingCapacity'], carJSON['fuelType'], carJSON['year']
         )
-        cursor.execute(sql)
+        print(sql)
+        commitFlag = True
+        try:
+            cursor.execute(sql)
+        except:
+            commitFlag = False
+            print("Skipped here")
 
-    connection.commit()
+    if commitFlag:
+        connection.commit()
 
 def scrape():
     try:
@@ -155,9 +172,3 @@ def scrape():
         connection.close()
 
 scrape()
-# findAllModels('https://www.cars-data.com/en/abarth')
-# findAllYears('https://www.cars-data.com/en/ford/focus')
-# findAllVariations('https://www.cars-data.com/en/ford-focus-1998/753')
-
-# for i in range(1, 80000, 10000):
-#     print(getCarJSON(i))
