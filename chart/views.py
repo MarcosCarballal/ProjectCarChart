@@ -1,6 +1,7 @@
 from django.shortcuts import render,render_to_response
 from django.http import HttpResponse
 import pymysql
+import simplejson as json
 
 DEFAULT_HOST = '35.226.24.18'
 DEFAULT_USER = 'root'
@@ -170,17 +171,45 @@ def parse_get(request):
 
     return search_dict
 
+
+def results_to_json(results):
+
+    keys = [
+        'bodyType', 
+        'emissionsCO2', 
+        'seatingCapacity', 
+        'maxSpeed', 
+        'fuelCapacity', 
+        'fuelType', 
+        'price', 
+        'fuelConsumption', 
+        'manufacturer', 
+        'model', 
+        'year', 
+        'enginePower'
+    ]
+
+    json_list = []
+
+    for result in results:
+        new_dict = {}
+        i = 0
+
+        for key in keys:
+            new_dict[key] = result[i]
+            i += 1
+
+        json_list.append(json.dumps(new_dict))
+
+    return json_list
     
 
 def index(request):
     connection = None;
     user_arguments = parse_get(request)
-
     results = get_results_by_all_parameters(**user_arguments)
-    for result in results:
-        print(str(result) + '\n')
-    json_list = []
+    json_list = results_to_json(results)
 
-    context = {"results":results}
+    context = {"results":json_list}
     return render_to_response('index_t.html',context)
 # Create your views here.
