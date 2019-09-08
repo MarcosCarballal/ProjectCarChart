@@ -54,12 +54,12 @@ def get_results_by_all_parameters(**kwargs):
         sql+= 'year >=2015'
     else:
         if bodyType is not None:
-            sql += "bodyType="+bodyType
+            sql += "bodyType="+ '"' +str(bodyType) + '"'
             if(num_params_left > 1):
                 sql+= ' AND '
                 num_params_left = num_params_left -1 #decrement
         if fuelType is not None:
-            sql += "fuelType="+fuelType
+            sql += "fuelType="+ '"' + str(fuelType) + '"'
             if(num_params_left > 1):
                 sql+= ' AND '
                 num_params_left = num_params_left -1 #decrement
