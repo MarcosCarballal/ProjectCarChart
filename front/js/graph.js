@@ -1,11 +1,25 @@
-var circles = [];
-var sliders;
-
-var pressed = false;
+/*class Graph() {
+  constructor() {
+    this.width: 600,
+    this.height: 600,
+    this.axisOffset: 50,  
+    this.xAxis: {
+      label: "X-AXIS",
+      min: 0,
+      max: 10,
+    },
+    this.yAxis: {
+      label: "Y-AXIS",
+      min: 0,
+      max: 10,
+    },
+  }
+}*/
 
 var graph = {
-  width: 450,
-  height: 450,
+  
+  width: 600,
+  height: 600,
   axisOffset: 50,  
   xAxis: {
     label: "X-AXIS",
@@ -25,7 +39,7 @@ var graph = {
     let off = graph.axisOffset;
     let xLabel = graph.xAxis.label;
     let yLabel = graph.yAxis.label;
-    let t = 30;
+    let txtSize = 50;
     
     // graph outline & axes
     push();
@@ -42,7 +56,7 @@ var graph = {
     // labels
     noStroke();
     fill(0);
-    textSize(t);
+    textSize(50);
     
     push();
     translate(0, h);
@@ -52,40 +66,10 @@ var graph = {
     
     push();
     translate(0, h);
-    text(xLabel, 0, off+t);
+    text(xLabel, 0, off+txtSize);
     pop();
     
     pop();
   }
 };
 
-function setup() {
-  var canvas = createCanvas(500, 500);
-  canvas.parent('p5container');
-  colorMode(HSB, 100);
-  noLoop();
-}
-
-function draw() {
-  background(0, 0, 100);
-  graph.draw(325, 25);
-}
-
-function keyPressed() {
-  if (keyCode == 32) {
-    redraw();
-  }
-}
-
-/*{
-  "bodyType": "cabriolet",
-  "emmissionCO2": "148",
-  "seatingCapacity": "2",
-  "maxspeed": "232",
-  "fuelcapacity": "45",
-  "price": "46760",
-  "fuelconsumption": "6.4",
-  "manufacturer": "Abarth",
-  "model": "Abarth 124 Spider"
-  "enginePower": "125"
-}*/
