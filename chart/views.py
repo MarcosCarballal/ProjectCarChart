@@ -52,6 +52,43 @@ def get_results_by_all_parameters(self,**kwargs):
 
 
 
+
+# Parse GET contents into dict
+def parse_get(request):
+
+    keys = [
+        "minYear",
+        "maxYear",
+        "minPrice",
+        "maxPrice",
+        "minSeats",
+        "maxSeats",
+        "minHorsePower",
+        "maxHorsePower",
+        "minEmissions",
+        "maxEmissions"
+    ]
+
+    # Create dict and add the keys guaranteed to have vals
+    search_dict = {
+        "bodyType": request.GET.get("bodyType"),
+        "fuelType": request.GET.get("fuelType")
+        }
+
+
+    for key in keys:
+        val = ""
+        val = request.GET.get(key)
+
+        if (val is None or val == "" or not val.isdigit()):
+            continue
+
+        search_dict[key] = val
+
+    return search_dict
+
+    
+
 def index(request):
     connection = None;
     try:
