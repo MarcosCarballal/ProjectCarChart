@@ -26,7 +26,8 @@ SECRET_KEY = '(2u%+k&i6g#y4paem)^yn4n=q47!n#t@fc+%mvomg=9%zq__1l'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'pennapps-xx-252216.appspot.com'
+    'pennapps-xx-252216.appspot.com',
+    'localhost'
 ]
 
 
@@ -122,4 +123,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = './static/'
+STATIC_ROOT = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,"static"),
+]
